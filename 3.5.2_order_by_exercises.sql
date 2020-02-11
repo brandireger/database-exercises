@@ -15,7 +15,7 @@ WHERE last_name LIKE 'e%'
 ORDER BY emp_no DESC;
 
 SELECT * FROM employees
-WHERE last_name LIKE 'e%'
+WHERE last_name LIKE 'e%e'
 ORDER BY emp_no DESC;
 
 SELECT * FROM employees
@@ -34,10 +34,12 @@ SELECT * FROM employees
 WHERE first_name IN ('Irena', 'Vidya', 'Maya') AND gender = 'M';
 
 SELECT * FROM employees
-WHERE last_name LIKE 'e%' OR last_name LIKE '%e';
+WHERE last_name LIKE 'e%' OR last_name LIKE '%e'
+ORDER BY emp_no DESC;
 
 SELECT * FROM employees
-WHERE last_name LIKE 'e%' AND last_name LIKE '%e';
+WHERE last_name LIKE 'e%e'
+ORDER BY emp_no DESC;
 
 SELECT * FROM employees
 WHERE hire_date LIKE '199%' AND birth_date LIKE '%12-25'
