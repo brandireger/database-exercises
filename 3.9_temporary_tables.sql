@@ -56,6 +56,24 @@ ALTER TABLE payment MODIFY amount INTEGER;
 -- 3. Find out how the average pay in each department compares to the overall average pay. 
 -- In order to make the comparison easier, you should use the Z-score for salaries. 
 -- In terms of salary, what is the best department to work for? The worst?
+CREATE TABLE stats AS 
+SELECT AVG(salary) AS mean, STD(salary) AS sd
+FROM employees.salaries
+WHERE salaries.to_date > NOW();
+
+CREATE TABLE salary_compare AS 
+SELECT dept_name, AVG(salary) AS 'average_salary'
+FROM employees.salaries
+JOIN employees.dept_emp USING (emp_no)
+JOIN employees.departments USING (dept_no)
+WHERE dept_emp.to_date > NOW() AND salaries.to_date > NOW()
+GROUP BY dept_name;
+
+ALTER TABLE salary_compare ADD salary_z_score FLOAT(36);
+
+UPDATE salary_compare 
+SET salary_z_score = ((average_salary - (SELECT mean FROM stats)) / (SELECT sd FROM stats));
+
 
 
 -- scratch:
