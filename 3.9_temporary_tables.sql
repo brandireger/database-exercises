@@ -55,7 +55,6 @@ ALTER TABLE payment MODIFY amount INTEGER;
 
 -- 3. Find out how the average pay in each department compares to the overall average pay. 
 -- In order to make the comparison easier, you should use the Z-score for salaries. 
--- In terms of salary, what is the best department to work for? The worst?
 CREATE TABLE stats AS 
 SELECT AVG(salary) AS mean, STD(salary) AS sd
 FROM employees.salaries
@@ -74,31 +73,7 @@ ALTER TABLE salary_compare ADD salary_z_score FLOAT(36);
 UPDATE salary_compare 
 SET salary_z_score = ((average_salary - (SELECT mean FROM stats)) / (SELECT sd FROM stats));
 
-
-
--- scratch:
-CREATE TABLE salary_compare AS 
-SELECT emp_no, salary, dept_name
-FROM employees.salaries
-#JOIN employees.employees USING (emp_no)
-JOIN employees.dept_emp USING (emp_no)
-JOIN employees.departments USING (dept_no)
-WHERE salaries.to_date > NOW();
-
-SELECT * FROM salary_compare;
-
-ALTER TABLE salary_compare ADD salary_z_score FLOAT(36);
-
-ALTER TABLE salary_compare ADD row_x_minus_mean FLOAT(36);
-
-UPDATE salary_compare SET row_x_minus_mean = (salary - (SELECT AVG(salary)));
-
-
-UPDATE salary_compare SET salary_z_score = 
-		(SELECT AVG(salary) AS mean FROM salary_compare)
-		(SELECT STD(salary) AS sd FROM salary_compare)
-		(SELECT (salary - mean) / sd FROM salary_compare)
-
-
-
+-- In terms of salary, what is the best department to work for? The worst?
+According to the z-scores, the sales department has an average salary that is almost 1 standard deviation above the average salary for the whole company.
+The 'worst' is the Human Resources department, where the average salary is almost half a deviation lower than the rest of the company.
 
