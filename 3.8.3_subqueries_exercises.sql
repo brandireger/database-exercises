@@ -78,11 +78,26 @@ WHERE emp_no IN (
 		AND salaries.to_date > NOW()
 ;
 
+-- Solution from class:
+SELECT first_name, last_name, salary
+FROM employees
+JOIN salaries USING (emp_no)
+WHERE to_date > NOW()
+AND salary > (SELECT AVG(salary) FROM salaries);
+
 -- 6. How many current salaries are within 1 standard deviation of the highest salary?
 SELECT * FROM salaries
 WHERE salary > 
 		(SELECT MAX(salary) - STD(salary) FROM salaries)
 AND to_date > NOW();
+
+-- Solution from class:
+SELECT 
+(SELECT count(*) FROM salaries
+WHERE salary >= 
+		(SELECT MAX(salary) - STD(salary) FROM salaries)
+AND to_date > NOW())
+/ (SELECT count(*) FROM salaries WHERE to_date > NOW())*100;
 
 -- BONUS 1. Find all the department names that currently have female managers.
 SELECT dept_name FROM departments
