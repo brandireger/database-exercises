@@ -55,7 +55,7 @@ ALTER TABLE payment MODIFY amount INTEGER;
 
 -- 3. Find out how the average pay in each department compares to the overall average pay. 
 -- In order to make the comparison easier, you should use the Z-score for salaries. 
-CREATE TABLE stats AS 
+CREATE TEMPORARY TABLE stats AS 
 SELECT AVG(salary) AS mean, STD(salary) AS sd
 FROM employees.salaries
 WHERE salaries.to_date > NOW();
